@@ -1,0 +1,180 @@
+###Description: Web Screenshot Application on Kubernetes - On-premise.
+
+### Prerequisites:
+ - Docker up and running
+ - kubectl
+ - minikube
+
+
+### Steps:
+
+# Step1: Do as a bash script.
+Set up on-prem k8s cluster. Using minikube.
+commads:
+    - minikube start
+    - minikube status
+    - minikube addons enable ingress
+    - minikube dashboard (Operational - among the way to check the cluster status via web UI)
+
+    #For changing the kubectl context to minikube:
+    - kubectl config get-contexts
+    - kubectl config use-context minikube
+    - kubectl config current-context
+
+    #For checking the nodes:
+    - kubectl get nodes
+
+
+# Step2:
+Build the application, dockerize it and push it to the docker hub.
+With these features:
+    - Accept user input for a target website URL.
+    - Capture a screenshot of the specified website.
+    - Store screenshot metadata and file references in a database.
+
+
+Cleaning Up:
+    - minikube stop
+    - minikube delete
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Web Screenshot Application Deployment Steps
+
+## 1. Infrastructure Setup
+
+1.1. Install Prerequisites
+- Install Docker
+- Install kubectl
+- Install minikube (for local development)
+- Install helm
+
+1.2. Set up Kubernetes Cluster
+- Initialize master node
+- Configure networking (Calico/Flannel)
+- Join worker nodes
+- Verify cluster status
+
+## 2. Application Development
+
+2.1. Create Web Application
+- Set up Python Flask application
+- Implement screenshot capture using Selenium/Playwright
+- Create REST API endpoints
+- Build frontend interface
+
+2.2. Database Setup
+- Deploy PostgreSQL database
+- Create schemas for:
+  - Users
+  - Screenshots metadata
+  - File references
+
+2.3. Application Testing
+- Unit tests
+- Integration tests
+- Load testing
+
+## 3. Containerization
+
+3.1. Create Docker Images
+- Write Dockerfile for web application
+- Build and test locally
+- Push to container registry
+
+3.2. Database Container
+- Use official PostgreSQL image
+- Configure persistence
+- Set up backup strategy
+
+## 4. Kubernetes Deployment
+
+4.1. Create Kubernetes Manifests
+- Deployments
+- Services
+- ConfigMaps
+- Secrets
+- PersistentVolumeClaims
+
+4.2. Set up Ingress
+- Deploy NGINX Ingress Controller
+- Configure routing rules
+- Set up TLS certificates using cert-manager
+
+4.3. Resource Management
+- Set resource limits
+- Configure HPA (Horizontal Pod Autoscaling)
+- Implement pod disruption budgets
+
+## 5. CI/CD Pipeline
+
+5.1. Set up Pipeline (Jenkins/GitLab CI)
+- Source code management
+- Automated testing
+- Image building
+- Deployment automation
+
+5.2. Implement Security Scanning
+- Container vulnerability scanning
+- Code security analysis
+- Dependency checking
+
+## 6. Monitoring and Logging
+
+6.1. Monitoring Setup
+- Deploy Prometheus
+- Configure Grafana dashboards
+- Set up alerting
+
+6.2. Logging Solution
+- Deploy ELK Stack/Loki
+- Configure log aggregation
+- Set up log retention policies
+
+## 7. Documentation
+
+7.1. Technical Documentation
+- System architecture diagrams
+- Component interactions
+- API documentation
+
+7.2. Operational Documentation
+- Deployment procedures
+- Backup and recovery
+- Troubleshooting guides
+
+7.3. User Documentation
+- Installation guide
+- Usage instructions
+- FAQ
+
+## 8. Security Measures
+
+8.1. Implementation
+- Network policies
+- RBAC configuration
+- Secret management
+- Security context constraints
+
+8.2. Regular Maintenance
+- Security patches
+- Certificate rotation
+- Access review
+
+## Web Screenshot Application Architecture
+
+Frontend ─► API Server ─► Screenshot Service ─► PostgreSQL DB
+                              │
+                              ▼
+                         Storage (PVC)

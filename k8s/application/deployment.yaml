@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: screenshot-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: screenshot-app
+  template:
+    metadata:
+      labels:
+        app: screenshot-app
+    spec:
+      containers:
+      - name: screenshot-app
+        image: almogmaman762/screenshotapp
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        volumeMounts:
+        - name: screenshots
+          mountPath: /screenshots
+      volumes:
+      - name: screenshots
+        persistentVolumeClaim:
+          claimName: screenshots-pvc

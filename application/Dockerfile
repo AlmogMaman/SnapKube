@@ -4,9 +4,19 @@ FROM python:3.9-slim
 RUN apt update && apt install -y \
     chromium \
     chromium-driver \
+    libglib2.0-0 \
+    libnss3 \
+    libgconf-2-4 \
+    libfontconfig1 \
     wget \
     gnupg \
     && rm -rf /var/lib/apt/lists/*
+# RUN apt update && apt install -y \
+#     chromium-browser \
+#     chromium-driver \
+#     wget \
+#     gnupg \
+#     && rm -rf /var/lib/apt/lists/*
 
 # Create app directories
 WORKDIR /app

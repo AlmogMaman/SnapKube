@@ -4,11 +4,42 @@
  - Docker up and running
  - kubectl
  - minikube
+ - Rancher
 
 
 ### Steps:
 
-# Step1: Do as a bash script.
+# Step 1: Set up Rancher (in scripts folder)
+Set up on-prem k8s cluster. Using Rancher.
+commands:
+    - docker run -d --privileged --restart=unless-stopped -p 8080:80 -p 4430:443 rancher/rancher
+    - echo "Access Rancher UI at https://localhost"
+    - echo "Configuring kubectl to use Rancher..."
+    - RANCHER_URL="https://localhost"
+    - kubectl config set-cluster rancher-cluster --server=$RANCHER_URL --insecure-skip-tls-verify=true
+    - kubectl config set-context rancher-context --cluster=rancher-cluster
+    - kubectl config use-context rancher-context
+    - echo "Checking the nodes..."
+    - kubectl get nodes
+    - echo "Current kubectl context:"
+    - kubectl config current-context
+    #Set a namespace for the project
+    - kubectl create namespace screenshots-project
+    - kubectl config set-context --current --namespace=screenshots-project
+    #Verify the namespace:
+    - kubectl config view --minify | grep namespace:
+    - echo "Rancher setup completed successfully!"
+
+#Pay atention that in the procees the rancher will ask for username and password. we need to reach rancher via
+the rancher url - localhost:4430 - from there has a command to find the Bootstrap Password, and then there is a 
+password that we can choose. hit the password and agree to terms, hit continue.
+now you have the password to the admini user.
+
+#Pay attention to copy the kubeconfig from the cluster (find via rancher ui) to the ~/.kube/config file
+for setting the kubectl to work properly on the cluster (rancher)
+    
+
+# Step1: Setup Minikube (in scripts folder)
 Set up on-prem k8s cluster. Using minikube.
 commads:
     - minikube start
@@ -39,7 +70,14 @@ Cleaning Up:
 
 
 
+Drafts:
+wsl --shutdown
+Restart-Service LxssManager
 
+net stop LxssManager
+net start LxssManager
+
+https://127.0.0.1/dashboard/c/local/explorer/namespace/screenshots-project#Resources
 
 
 

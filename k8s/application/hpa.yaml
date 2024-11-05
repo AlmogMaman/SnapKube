@@ -10,15 +10,17 @@ spec:
   minReplicas: 2
   maxReplicas: 10
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
+  - type: Pods
+    pods:
+      metric:
+        name: cpu
       target:
-        type: Utilization
-        averageUtilization: 70
-  - type: Resource
-    resource:
-      name: memory
+        type: AverageValue
+        averageValue: 70m
+  - type: Pods
+    pods:
+      metric:
+        name: memory
       target:
-        type: Utilization
-        averageUtilization: 80
+        type: AverageValue
+        averageValue: 80Mi

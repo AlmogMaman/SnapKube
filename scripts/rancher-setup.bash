@@ -4,7 +4,7 @@
 
 # Start Rancher server
 echo "Starting Rancher server..."
-docker run -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher
+docker run -d --privileged --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher
 
 # Wait for Rancher to start
 echo "Waiting for Rancher to start..."
@@ -29,7 +29,18 @@ echo "Current kubectl context:"
 kubectl config current-context
 
 # Enable Ingress in Rancher
-echo "Enabling Ingress in Rancher..."
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+# echo "Enabling Ingress in Rancher..."
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+#Set a namespace for the project
+kubectl create namespace screenshots-project
+kubectl config set-context --current --namespace=screenshots-project
+
+#Verify the namespace:
+kubectl config view --minify | grep namespace:
+
+
 
 echo "Rancher setup completed successfully!"
+
+#password: DOEBJetsg9VrTdLW

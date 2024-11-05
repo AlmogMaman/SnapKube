@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: screenshot-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: screenshot-app
@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: screenshot-app
-        image: almogmaman762/screenshotapp
+        image: almogmaman762/screenshotapp:2
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         env:

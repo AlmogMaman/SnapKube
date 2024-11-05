@@ -9,6 +9,9 @@ import base64
 import logging
 from logging_config import setup_logging
 
+
+
+
 app = Flask(__name__, template_folder='templates')
 setup_logging(app)  # Set up logging
 
@@ -22,7 +25,16 @@ screenshot_duration = Histogram(
     'screenshot_duration_seconds',
     'Time spent processing screenshots'
 )
+@app.errorhandler(500)
+def internal_error(error):
+    app.logger.error(f'Internal Server Error: {error}')
+    return jsonify({'error': 'Internal Server Error'}), 500
 
+@app.errorhandler(404)
+def not_found(error):
+    app.logger.error(f'Not Found: {error}')
+    return jsonify({'error': 'Not Found'}), 404
+    
 @app.route('/')
 def index():
     return render_template('index.html')

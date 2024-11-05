@@ -1,6 +1,6 @@
-kubectl apply -f ../secrets/
-kubectl apply -f ../storage/
-kubectl apply -f ../application/
+kubectl apply -f ../k8s/secrets/
+kubectl apply -f ../k8s/storage/
+kubectl apply -f ../k8s/application/
 
 #For the metrics server
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml --namespace=kube-system

@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: screenshot-app
   annotations:
+    spec.ingressClassName: "nginx"
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   tls:

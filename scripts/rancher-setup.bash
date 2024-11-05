@@ -21,8 +21,8 @@ kubectl config set-context rancher-context --cluster=rancher-cluster
 kubectl config use-context rancher-context
 
 # Check the nodes
-echo "Checking the nodes..."
-kubectl get nodes
+# echo "Checking the nodes..."
+# kubectl get nodes
 
 # Check the current kubectl context
 echo "Current kubectl context:"
@@ -43,4 +43,4 @@ kubectl config view --minify | grep namespace:
 
 echo "Rancher setup completed successfully!"
 
-#password: DOEBJetsg9VrTdLW
+#password: 42fvdrL5WOsEjjSl

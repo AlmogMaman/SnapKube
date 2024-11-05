@@ -1,0 +1,8 @@
+# values.yaml
+global:
+  leaderElection:
+    namespace: cert-manager
+prometheus:
+  enabled: true
+webhook:
+  timeoutSeconds: 30

@@ -80,6 +80,7 @@
                 messageDiv.textContent = 'Please enter a URL.';
                 messageDiv.className = 'message error';
                 messageDiv.style.display = 'block';
+                setTimeout(() => { messageDiv.style.display = 'none'; }, 4000);
                 return;
             }
 
@@ -100,11 +101,13 @@
                     messageDiv.className = 'message error';
                 }
                 messageDiv.style.display = 'block';
+                setTimeout(() => { messageDiv.style.display = 'none'; }, 4000);
             })
             .catch(error => {
                 messageDiv.textContent = 'Error: ' + error.message;
                 messageDiv.className = 'message error';
                 messageDiv.style.display = 'block';
+                setTimeout(() => { messageDiv.style.display = 'none'; }, 4000);
             });
         });
     </script>

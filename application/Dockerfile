@@ -20,7 +20,6 @@ RUN apt-get update && apt-get install -y  \
 RUN python -c "import io; print(io.open)"
 
 # Create app directories
-WORKDIR /app
 RUN mkdir -p /app/logs /screenshots \
     && chmod -R 755 /app /screenshots \
     && chmod 666 /dev/stdout /dev/stderr /dev/stdin

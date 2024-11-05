@@ -5,6 +5,7 @@
  - kubectl
  - minikube
  - Rancher
+ - Helm
 
 
 ### Steps:
@@ -31,7 +32,7 @@ commands:
     - echo "Rancher setup completed successfully!"
 
 #Pay atention that in the procees the rancher will ask for username and password. we need to reach rancher via
-the rancher url - localhost:4430 - from there has a command to find the Bootstrap Password, and then there is a 
+the rancher url - localhost:443 - from there has a command to find the Bootstrap Password, and then there is a 
 password that we can choose. hit the password and agree to terms, hit continue.
 now you have the password to the admini user.
 
@@ -62,6 +63,13 @@ With these features:
     - Accept user input for a target website URL.
     - Capture a screenshot of the specified website.
     - Store screenshot metadata and file references in a database.
+
+# Step 3:
+Set the ingress controller and cert manager.
+
+#Step 4:
+Install build and run postress for dtoring the data.
+
 
 
 Cleaning Up:

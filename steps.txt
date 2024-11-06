@@ -225,6 +225,10 @@ https://127.0.0.1/dashboard/c/local/explorer/namespace/screenshots-project#Resou
 ## Web Screenshot Application Architecture
 
 Frontend ─► API Server ─► Screenshot Service ─► PostgreSQL DB
-                              │
-                              ▼
-                         Storage (PVC)
+                                                    │
+                                                    ▼
+                                                Storage (PVC)
+                                                    │
+                                                    ▼
+                                                Storage (PV)
+

@@ -90,7 +90,7 @@ def take_screenshot():
 
         
         info = {
-            'screenshot_id' : abs(hash(file_path)) % (10**10),  # unique number based on the file path
+            'screenshot_id' : abs(hash(file_path)) % (10**10),  # unique number based on the file path bigin
             'timestamp': datetime.now().isoformat(),
             'page_url': url,
             'width': 0,
@@ -104,7 +104,6 @@ def take_screenshot():
             'user_id': os.getuid(),
         }
         info['width'], info['height'], info['file_format'], info['file_size'], info['creation_time'], info['modification_time'] = extract_metadata(file_path)
-
         # connect to the db
         connection = get_db_connection()
         cursor = connection.cursor()

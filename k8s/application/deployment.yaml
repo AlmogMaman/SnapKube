@@ -50,10 +50,3 @@ spec:
             port: 5000
           initialDelaySeconds: 5
           periodSeconds: 5
-      #   volumeMounts:
-      #   - name: screenshots
-      #     mountPath: /screenshots
-      # volumes:
-      # - name: screenshots
-      #   persistentVolumeClaim:
-      #     claimName: screenshots-pvc

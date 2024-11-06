@@ -1,31 +1,67 @@
-# SnapKube
+# Project Documentation
 
-A Kubernetes-based web application that captures and stores website screenshots with automated deployment and scaling capabilities.
+## System Architecture
 
-![SnapKube Architecture](docs/images/architecture.png)
+The project is designed to manage user screenshots in a Kubernetes environment. It consists of several components:
 
-## 🚀 Features
+- **Kubernetes Cluster**: The core of the deployment, managing containerized applications.
+- **PostgreSQL Database**: Stores user screenshots and metadata.
+- **Ingress Controller**: Manages external access to the services, providing load balancing and SSL termination.
+- **Cert-Manager**: Automates the management and issuance of TLS certificates.
+- **Metrics Server**: Collects resource metrics from Kubelets and exposes them to the Kubernetes API.
 
-- Website screenshot capture via REST API
-- Automated Kubernetes deployment
-- PostgreSQL database for metadata storage
-- Secure TLS communication
-- Prometheus monitoring integration
-- Automated CI/CD with GitHub Actions
-- Horizontal pod autoscaling
+## Deployment Instructions
 
-## 🏗️ Quick Start
+1. **Set Up Kubernetes Namespace**:
+   ```bash
+   kubectl create namespace screenshots-project
+   kubectl config set-context --current --namespace=screenshots-project
+   ```
 
-### Prerequisites
+2. **Apply Kubernetes Resources**:
+   ```bash
+   kubectl apply -f ../k8s/secrets/
+   kubectl apply -f ../k8s/storage/
+   kubectl apply -f ../k8s/application/
+   kubectl apply -f ../k8s/postgres/
+   ```
 
-- Kubernetes cluster (or minikube for local development)
-- kubectl
-- Docker
-- Helm
-- Python 3.9+
+3. **Install Metrics Server**:
+   ```bash
+   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml --namespace=kube-system
+   ```
 
-### Local Development
+4. **Install NGINX Ingress Controller**:
+   ```bash
+   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+   helm repo update
+   kubectl create ns nginx
+   helm install my-nginx ingress-nginx/ingress-nginx --namespace nginx
+   ```
 
-```bash
-# Clone repository
-git clone https://github.com/yourusername/snapkube.git
+5. **Set Up TLS Certificates**:
+   ```bash
+   openssl genrsa -out tls.key 2048
+   openssl req -x509 -new -nodes -key tls.key -subj "/CN=screenshot-app.local" -days 365 -out tls.crt
+   kubectl create secret tls screenshot-tls --cert=tls.crt --key=tls.key
+   ```
+
+6. **Configure Ingress**:
+   Ensure that the ingress resource is properly configured to use the created TLS secret and routes traffic to the application.
+
+## User Guide
+
+1. **Accessing the Application**:
+   After deployment, the application can be accessed via the configured domain (e.g., `https://screenshot-app.local`).
+
+2. **Using the Application**:
+   Users can upload screenshots, which will be stored in the PostgreSQL database. The application provides a user-friendly interface for managing and viewing screenshots.
+
+3. **Monitoring**:
+   Use the metrics server to monitor the health and performance of the application. Access metrics via:
+   ```bash
+   kubectl get --raw "/apis/metrics.k8s.io/v1beta1/namespaces/screenshots-project/pods" | jq .
+   ```
+
+4. **Cleanup**:
+   To clean up resources, use the provided cleanup scripts to remove deployments and configurations.

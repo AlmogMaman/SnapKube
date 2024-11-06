@@ -14,11 +14,18 @@ spec:
     spec:
       containers:
       - name: screenshot-app
-        image: almogmaman762/screenshot-app
+        image: almogmaman762/screenshot-app:6
+        # image: almogmaman762/screenshot-app
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
         env:
+        - name: DB_NAME
+          value: screenshots
+        - name: DB_USER
+          value: postgres
+        - name: DB_HOST
+          value: postgres
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:

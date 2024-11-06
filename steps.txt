@@ -68,13 +68,17 @@ With these features:
 Set the ingress controller and cert manager.
 
 #Step 4:
-Install build and run postress for dtoring the data.
+Install build and run postges for storing the data.
 
+#Step 5:
+Ajusted the app to work with postgres
 
+FINISH BUISNESS LOGIC.
 
-Cleaning Up:
-    - minikube stop
-    - minikube delete
+ADDONS:
+CI/CD
+Monitoring
+Logging
 
 
 

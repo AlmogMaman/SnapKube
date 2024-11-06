@@ -1,9 +1,22 @@
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: standard
-provisioner: rancher.io/hostpath
-parameters:
-  type: pd-standard
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: standard
+# provisioner: rancher.io/hostpath
+# parameters:
+#   type: pd-standard
+# reclaimPolicy: Delete
+# volumeBindingMode: Immediate
+# allowVolumeExpansion: true
+
+# # apiVersion: storage.k8s.io/v1
+# # kind: StorageClass
+# # metadata:
+# #   name: standard
+# # provisioner: rancher.io/hostpath
+# # parameters:
+# #   type: pd-standard
+# # reclaimPolicy: Delete
+# # volumeBindingMode: Immediate
+# # allowVolumeExpansion: true
+

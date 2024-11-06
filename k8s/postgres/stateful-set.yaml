@@ -15,6 +15,7 @@ spec:
     spec:
       containers:
       - name: postgres
+        #image: almogmaman762/screenshot-postgres-db
         image: postgres:14
         ports:
         - containerPort: 5432
@@ -28,14 +29,22 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: password
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-  - metadata:
-      name: postgres-storage
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 5Gi 
+        - name: init-db
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+      - name: init-db
+        configMap:
+          name: postgres-config

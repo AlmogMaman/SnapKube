@@ -18,4 +18,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi 
+      storage: 5Gi
+  volumeName: postgres-pv

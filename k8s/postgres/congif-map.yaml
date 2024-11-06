@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  init.sql: |
+    CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE
+    );
+
+    CREATE TABLE screenshots (
+        screenshot_id SERIAL PRIMARY KEY,
+        timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        user_id INTEGER REFERENCES users(user_id),
+        page_url TEXT,
+        width INTEGER,
+        height INTEGER,
+        file_format TEXT,
+        file_size BIGINT,
+        creation_time TIMESTAMP WITH TIME ZONE,
+        modification_time TIMESTAMP WITH TIME ZONE
+    );
+
+    CREATE INDEX idx_screenshots_timestamp_user_id ON screenshots (timestamp, user_id);

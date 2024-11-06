@@ -4,6 +4,7 @@ FROM python:3.9-slim
 # Update pip to the latest version
 RUN python -m pip install --upgrade pip
 
+
 # Install Chrome and Chrome WebDriver
 RUN apt-get update && apt-get install -y  \
     chromium \
@@ -16,11 +17,10 @@ RUN apt-get update && apt-get install -y  \
     gnupg \
     && rm -rf /var/lib/apt/lists/*
 
-# Verify that io.open is available in the Python environment
-RUN python -c "import io; print(io.open)"
+WORKDIR /app
 
 # Create app directories
-RUN mkdir -p /app/logs /screenshots \
+RUN mkdir -p /logs /screenshots \
     && chmod -R 755 /app /screenshots \
     && chmod 666 /dev/stdout /dev/stderr /dev/stdin
 

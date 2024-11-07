@@ -16,6 +16,7 @@
 ```bash
 run the 'sudo scripts/rancher-setup.bash' (pay attention to Step 1 below)
 run the 'scripts/cluster-setup.bash'
+```
 
 ### Explain about the process:
 

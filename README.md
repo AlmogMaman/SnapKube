@@ -26,30 +26,29 @@ run the 'scripts/cluster-setup.bash'
 # Step 1: Set up Rancher (in scripts folder)
 Set up on-prem k8s cluster. Using Rancher.
 
-Update the host file in you os
+# Update the host file in you os
 ![Host](Images/Host-Adding-Screenshot-Local-Host.PNG)
 
-Set Up rancher via the script in /screpts folder
+# Set Up rancher via the script in /screpts folder
 ![Rancher1](Images/Rancher-Setup.PNG)
 
-Rancher is accesable
+# Rancher is accesable
 ![Rancher2](Images/Rancher-Welcome.PNG)
 
-Find the boostrap password and enter to rancher welcome page
-
+# Find the boostrap password and enter to rancher welcome page
 ![Rancher3](Images/Rancher-Boostrap.PNG)
 
 ![Rancher4](Images/Rancher-Boostrap1.PNG)
 
 ![Rancher5](Images/Rancher-Boostrap2.PNG)
 
-Copy the Kubeconfig content
+# Copy the Kubeconfig content
 ![Rancher6](Images/Rancher-Copy-Kubeconfig.PNG)
 
-Edit the ~/.kube/config file with the Rancher kubernetes Cluster Kubeconfig info
+# Edit the ~/.kube/config file with the Rancher kubernetes Cluster Kubeconfig info
 ![Rancher7](Images/Rancher-Edit-Kubeconfig-File.PNG)
 
-We successfuly set up Rancher
+# We successfuly set up Rancher
 ![Rancher8](Images/Rancher-Welcome1.PNG)
 
 
@@ -110,7 +109,6 @@ First, we will create a PersistentVolumeClaim (PVC) to request storage resources
 Make sure to configure the necessary service to allow communication between the application and the PostgreSQL database. This setup will provide a reliable and scalable database solution for our application.
 
 
-# Start of Selection
 # Step 5:
 In this step, we will ensure that the application is properly integrated with the PostgreSQL database. This involves several key tasks to guarantee smooth communication and data handling between the application and the database.
 
@@ -124,15 +122,16 @@ Finally, we will conduct thorough testing to ensure that the application interac
 
 By the end of this step, we will have a fully functional application that works seamlessly with the PostgreSQL database, enabling efficient data storage and retrieval for our web screenshot service.
 
-Access the application (via nginx ingress controller)
+# Access the application (via nginx ingress controller)
 ![App1](Images/Application-Accesing.PNG)
 
-Checking validation of input
+# Checking validation of input
 ![App2](Images/Application-Checking-Input.PNG)
 
-Successful Url screenshot and db update acured
+# Took Successful Url screenshot
 ![App3](Images/Application-Success-Message.PNG)
 
+# Updated the DB
 ![Postgres](Images/Postgres-Data-Updated-Succesfuly.PNG)
 
 
@@ -152,7 +151,7 @@ run 'sudo scripts/rancher-cleanup.bash'
 ![Cleanup2](Images/Rancher-Cleanup.PNG)
 
 
-# UPCOMMING:
+# Upcomming:
  - CI/CD
  - Monitoring
  - Logging   

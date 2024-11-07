@@ -15,8 +15,8 @@
 
 (pay attention to Step 1 below)
 ```bash
-run the 'sudo scripts/rancher-setup.bash' 
-run the 'scripts/cluster-setup.bash'
+'sudo scripts/rancher-setup.bash' 
+'scripts/cluster-setup.bash'
 ```
 
 ### Explain about the process:
@@ -26,21 +26,20 @@ run the 'scripts/cluster-setup.bash'
 # Step 1: Set up Rancher (in scripts folder)
 Set up on-prem k8s cluster. Using Rancher.
 
-# Update the host file in you os
-![Host](Images/Host-Adding-Screenshot-Local-Host.PNG)
 
-# Set Up Rancher via the script in /screpts folder
+
+# Set Up Rancher via the script in scripts folder
 ![Rancher1](Images/Rancher-Setup.PNG)
 
 # Rancher is accesable
 ![Rancher2](Images/Rancher-Welcome.PNG)
 
-# Find the boostrap password and enter to Rancher welcome page
-![Rancher3](Images/Rancher-Boostrap.PNG)
+# Find the bootstrap password and enter to Rancher welcome page
+![Rancher3](Images/Rancher-Bootstrap.PNG)
 
-![Rancher4](Images/Rancher-Boostrap1.PNG)
+![Rancher4](Images/Rancher-Bootstrap1.PNG)
 
-![Rancher5](Images/Rancher-Boostrap2.PNG)
+![Rancher5](Images/Rancher-Bootstrap2.PNG)
 
 # Copy the Kubeconfig content
 ![Rancher6](Images/Rancher-Copy-Kubeconfig.PNG)
@@ -70,6 +69,8 @@ Set up on-prem k8s cluster. Using Rancher.
 - For Windows, edit the C:\Windows\System32\drivers\etc\hosts file:
   Notepad should be run as Administrator to save changes.
 
+# Update the host file in you os
+![Host](Images/Host-Adding-Screenshot-Local-Host.PNG)
 
 # Step 2: Application Development and Deployment
 In this step, we will focus on building the web application, containerizing it, and deploying it to our Kubernetes cluster. The application will be designed to provide users with the ability to capture screenshots of websites. 
@@ -81,11 +82,12 @@ To achieve this, we will follow these key tasks:
 
 3. **Push to Docker Hub**: Once the application is containerized, we will build the Docker image and push it to Docker Hub. This will make the image accessible for deployment in our Kubernetes cluster.
 
-4. **Deploy in the Cluster**: After pushing the image, we will create Kubernetes manifests (Deployment and Service) to deploy the application in the cluster. This will ensure that the application is running in a scalable and resilient manner.
+4. **Deploy in the Cluster**: After pushing the image, we will create Kubernetes manifests (Deployment, Service and HPA) to deploy the application in the cluster. This will ensure that the application is running in a scalable and resilient manner.
 
 The application will have the following features:
 - Accept user input for a target website URL.
 - Capture a screenshot of the specified website using a headless browser (e.g., Selenium or Playwright).
+- Update the DB (Upcamming)
 
 By the end of this step, we will have a functional web application deployed in our Kubernetes cluster, ready to accept user requests and capture screenshots efficiently.
 
@@ -106,7 +108,7 @@ Now we have the application running in the cluster, accessible via the ingress c
 # Step 4:
 To set up PostgreSQL as my database in the cluster, we will use a StatefulSet resource. This approach ensures that each PostgreSQL instance has a stable network identity and persistent storage, which is crucial for database applications. 
 
-First, we will create a PersistentVolume (PV) and PersistentVolumeClaim (PVC) to request storage resources from the cluster. Then, we will define the StatefulSet, specifying the PostgreSQL image, environment variables for database configuration, and the volume mounts to link the PVC to the PostgreSQL pods.
+To begin, we will establish a PersistentVolume (PV) and a corresponding PersistentVolumeClaim (PVC) to allocate the necessary storage resources from the cluster. Following this, we will configure the StatefulSet, detailing the PostgreSQL image, setting the environment variables for database configuration, and specifying the volume mounts to connect the PVC with the PostgreSQL pods.
 
 Make sure to configure the necessary service to allow communication between the application and the PostgreSQL database. This setup will provide a reliable and scalable database solution for our application.
 
@@ -116,11 +118,8 @@ In this step, we will ensure that the application is properly integrated with th
 
 First, we will verify the database connection settings in the application configuration. This includes specifying the correct database URL, username, and password. It is essential to ensure that the application can authenticate and connect to the PostgreSQL instance without issues.
 
-Next, we will implement the necessary database models and schemas within the application. This will involve defining the tables for storing user data, screenshot metadata, and any other relevant information. We will use an Object-Relational Mapping (ORM) tool, such as SQLAlchemy, to facilitate interactions with the database in a more Pythonic way.
 
-After setting up the models, we will write the functions to handle CRUD (Create, Read, Update, Delete) operations. This will allow the application to save screenshots, retrieve metadata, and manage user information effectively. We will also implement error handling to manage any potential issues that may arise during database operations.
-
-Finally, we will conduct thorough testing to ensure that the application interacts with the PostgreSQL database as expected. This will include unit tests for individual functions and integration tests to verify the overall functionality of the application with the database.
+Next, we will conduct thorough testing to ensure that the application interacts with the PostgreSQL database as expected. This will include unit tests for individual functions and integration tests to verify the overall functionality of the application with the database.
 
 By the end of this step, we will have a fully functional application that works seamlessly with the PostgreSQL database, enabling efficient data storage and retrieval for our web screenshot service.
 
@@ -132,17 +131,18 @@ By the end of this step, we will have a fully functional application that works 
 # Took Successful Url screenshot
 ![App3](Images/Application-Success-Message.PNG)
 
-# DB Updated the 
+# DB Updated
 ![Postgres](Images/Postgres-Data-Updated-Succesfuly.PNG)
 
 
 
 ### Cleanup:
 ```bash
-run 'scripts/cluster-cleanup.bash'
-run 'sudo scripts/rancher-cleanup.bash'
+'scripts/cluster-cleanup.bash'
+sudo scripts/rancher-cleanup.bash'
 ```
-
+# Cleaning the cluster
 ![Cleanup1](Images/Cluster-Cleanup.PNG)
 
+# Deleting Rancher
 ![Cleanup2](Images/Rancher-Cleanup.PNG)

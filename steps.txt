@@ -4,6 +4,7 @@ Documentation covering:
 - Cleanup - V
 - User guide.
 - Steps - V
+- Images
 
 
 
@@ -15,10 +16,14 @@ Documentation covering:
  - Rancher
  - Helm
 
+### Architecture in Local Kubernetes Cluster (Rancher):
+
+# Adding here the architecture file.
+
 ### How to run:
 Deployment instructions:
 run the 'sudo scripts/rancher-setup.bash' (pay attention to Step 1 below)
-run the 'sudo scripts/cluster-setup.bash'
+run the 'scripts/cluster-setup.bash'
 
 ### Explain about the process:
 
@@ -107,14 +112,11 @@ Monitoring
 Logging   
 
 
-### Architecture in Local Kubernetes Cluster (Rancher):
-
-# Adding here the architecture file.
 
 
 
 ### Cleanup:
-run 'sudo scripts/cluster-cleanup.bash'
+run 'scripts/cluster-cleanup.bash'
 run 'sudo scripts/rancher-cleanup.bash'
 
 

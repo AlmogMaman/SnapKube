@@ -1,67 +1,51 @@
-# Project Documentation
+# Start Generation Here
+# Web Screenshot Application on Kubernetes - On-premise
 
-## System Architecture
+## Description
+This project provides a web screenshot application that runs on a Kubernetes cluster using Rancher. It allows users to capture screenshots of specified websites and store the metadata and file references in a PostgreSQL database.
 
-The project is designed to manage user screenshots in a Kubernetes environment. It consists of several components:
+## Prerequisites
+- Docker must be installed and running.
+- kubectl must be installed.
+- Rancher must be set up.
+- Helm must be installed.
 
-- **Kubernetes Cluster**: The core of the deployment, managing containerized applications.
-- **PostgreSQL Database**: Stores user screenshots and metadata.
-- **Ingress Controller**: Manages external access to the services, providing load balancing and SSL termination.
-- **Cert-Manager**: Automates the management and issuance of TLS certificates.
-- **Metrics Server**: Collects resource metrics from Kubelets and exposes them to the Kubernetes API.
-
-## Deployment Instructions
-
-1. **Set Up Kubernetes Namespace**:
+## How to Run
+1. Run the Rancher setup script:
    ```bash
-   kubectl create namespace screenshots-project
-   kubectl config set-context --current --namespace=screenshots-project
+   ./scripts/rancher-setup.bash
+   ```
+   Follow the instructions to set up Rancher and configure kubectl.
+
+2. Run the cluster setup script:
+   ```bash
+   ./scripts/cluster-setup.bash
    ```
 
-2. **Apply Kubernetes Resources**:
-   ```bash
-   kubectl apply -f ../k8s/secrets/
-   kubectl apply -f ../k8s/storage/
-   kubectl apply -f ../k8s/application/
-   kubectl apply -f ../k8s/postgres/
-   ```
+## Steps
+### Step 1: Set up Rancher
+- Start the Rancher server using Docker.
+- Access the Rancher UI at `https://localhost`.
+- Configure kubectl to use Rancher.
 
-3. **Install Metrics Server**:
-   ```bash
-   kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml --namespace=kube-system
-   ```
+### Step 2: Build the Application
+- Dockerize the application and push it to Docker Hub.
+- Implement features to accept user input for a target website URL, capture screenshots, and store metadata in a database.
 
-4. **Install NGINX Ingress Controller**:
-   ```bash
-   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-   helm repo update
-   kubectl create ns nginx
-   helm install my-nginx ingress-nginx/ingress-nginx --namespace nginx
-   ```
+### Step 3: Set up Ingress Controller
+- Configure the ingress controller with a self-signed TLS certificate.
+- Ensure the application is accessible via the ingress controller.
 
-5. **Set Up TLS Certificates**:
-   ```bash
-   openssl genrsa -out tls.key 2048
-   openssl req -x509 -new -nodes -key tls.key -subj "/CN=screenshot-app.local" -days 365 -out tls.crt
-   kubectl create secret tls screenshot-tls --cert=tls.crt --key=tls.key
-   ```
+### Step 4: Set up PostgreSQL
+- Deploy PostgreSQL as a StatefulSet in the cluster.
 
-6. **Configure Ingress**:
-   Ensure that the ingress resource is properly configured to use the created TLS secret and routes traffic to the application.
+### Step 5: Application Integration
+- Adjust the application to work with the PostgreSQL database.
 
-## User Guide
+## Upcoming Features
+- CI/CD integration
+- Monitoring and logging capabilities
 
-1. **Accessing the Application**:
-   After deployment, the application can be accessed via the configured domain (e.g., `https://screenshot-app.local`).
+## Cleanup
+To clean up the resources, run the following scripts:
 
-2. **Using the Application**:
-   Users can upload screenshots, which will be stored in the PostgreSQL database. The application provides a user-friendly interface for managing and viewing screenshots.
-
-3. **Monitoring**:
-   Use the metrics server to monitor the health and performance of the application. Access metrics via:
-   ```bash
-   kubectl get --raw "/apis/metrics.k8s.io/v1beta1/namespaces/screenshots-project/pods" | jq .
-   ```
-
-4. **Cleanup**:
-   To clean up resources, use the provided cleanup scripts to remove deployments and configurations.

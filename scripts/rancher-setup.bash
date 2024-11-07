@@ -18,14 +18,11 @@ kubectl config set-cluster rancher-cluster --server=$RANCHER_URL --insecure-skip
 kubectl config set-context rancher-context --cluster=rancher-cluster
 kubectl config use-context rancher-context
 
-# Copy kubeconfig file to ~/.kube/config
-echo "Copying kubeconfig file to ~/.kube/config..."
-cp /path/to/rancher/kubeconfig ~/.kube/config
+# Copy kubeconfig file to ~/.kube/config manualy
+
 
 # Check the current kubectl context
 echo "Current kubectl context:"
 kubectl config current-context
 
 echo "Rancher setup completed successfully!"
-
-#password: 42fvdrL5WOsEjjSl

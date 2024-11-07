@@ -1,0 +1,46 @@
+flowchart TB
+    subgraph cluster["Local Kubernetes Cluster (Rancher)"]
+        ingress["Ingress Controller\n(NGINX with TLS)"]
+        
+        subgraph screenshot_services["Screenshot Services"]
+            ss["Screenshot Service"]
+            sd["Screenshot Deployment"]
+            sp["Screenshot Pod\n(HPA)"]
+        end
+        
+        subgraph database["Database"]
+            ps["PostgreSQL StatefulSet"]
+            pp["PostgreSQL Pod\n(HPA)"]
+        end
+        
+        subgraph storage["Storage"]
+            pvc["Persistent Volume Claim\n(PVC)"]
+            pv["Persistent Volume\n(PV)"]
+        end
+        
+        subgraph network["Connected Network"]
+        end
+        
+        %% Define connections
+        ingress --> ss
+        ss --> sd
+        sd --> sp
+        ps --> pp
+        pp --> pvc
+        pvc <--> pv
+        
+        %% Connect components to network
+        sp --- network
+        pp --- network
+    end
+    
+    %% Styling
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px
+    classDef service fill:#daf7a6,stroke:#82b43f
+    classDef storage fill:#ffc300,stroke:#c79100
+    classDef network fill:#ff5733,stroke:#c41e3a
+    
+    class ingress default
+    class ss,sd,sp,ps,pp service
+    class pvc,pv storage
+    class network network

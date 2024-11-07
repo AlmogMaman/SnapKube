@@ -1,13 +1,3 @@
-Documentation covering:
-- System architecture. - V
-- Deployment instructions. - V
-- Cleanup - V
-- User guide.
-- Steps - V
-- Images - V
-
-
-
 ###Description: Web Screenshot Application on Kubernetes - On-premise Using Rancher.
 
 ### Prerequisites:
@@ -23,8 +13,8 @@ Documentation covering:
 ### How to run:
 Deployment instructions:
 '''bash
-run the 'sudo scripts/rancher-setup.bash' (pay attention to Step 1 below)
-run the 'scripts/cluster-setup.bash'
+    run the 'sudo scripts/rancher-setup.bash' (pay attention to Step 1 below)
+    run the 'scripts/cluster-setup.bash'
 '''
 
 ### Explain about the process:
@@ -82,11 +72,11 @@ Set the ingress controller with TLS self signed Certificate.
 Set up the application and the ingress controller.
 Now we have the application running in the cluster accesible via ingress controller (nginx)
 
-#Step 4:
+# Step 4:
 Set up postgressSql as my db. via stetful set.
 
 
-#Step 5:
+# Step 5:
 Adjust the application working properly with the postgressSQL db.
 #Adding pictures here of postgress working with the app.
 
@@ -99,9 +89,9 @@ Adjust the application working properly with the postgressSQL db.
 
 
 UPCOMMING:
-CI/CD
-Monitoring
-Logging   
+ - CI/CD
+ - Monitoring
+ - Logging   
 
 
 

@@ -6,7 +6,7 @@
     <!-- Ingress Controller -->
     <rect x="250" y="60" width="300" height="60" fill="#e9ecef" stroke="#333" stroke-width="2" rx="5"/>
     <text x="300" y="90" font-family="Arial" font-size="12" font-weight="bold">Ingress Controller</text>
-    <text x="320" y="110" font-family="Arial" font-size="11">(NGINX with TLS)</text>
+    <text x="320" y="110" font-family="Arial" font-size="11">(NGINX with TLS :443)</text>
     
     <!-- Screenshot Services Group -->
     <rect x="50" y="180" width="300" height="250" fill="#daf7a6" stroke="#82b43f" stroke-width="2" rx="5" opacity="0.3"/>
@@ -14,7 +14,8 @@
     
     <!-- Screenshot Service -->
     <rect x="70" y="220" width="260" height="60" fill="#ffffff" stroke="#82b43f" stroke-width="2" rx="5"/>
-    <text x="140" y="255" font-family="Arial" font-size="12">Screenshot Service</text>
+    <text x="140" y="245" font-family="Arial" font-size="12">Screenshot Service</text>
+    <text x="150" y="265" font-family="Arial" font-size="11">(ClusterIP: 80)</text>
     
     <!-- Screenshot Deployment -->
     <rect x="70" y="300" width="260" height="60" fill="#ffffff" stroke="#82b43f" stroke-width="2" rx="5"/>
@@ -28,13 +29,19 @@
     <rect x="450" y="180" width="300" height="250" fill="#ffc300" stroke="#c79100" stroke-width="2" rx="5" opacity="0.3"/>
     <text x="460" y="200" font-family="Arial" font-size="12" font-weight="bold">Database</text>
     
-    <!-- PostgreSQL StatefulSet -->
+    <!-- PostgreSQL Service -->
     <rect x="470" y="220" width="260" height="60" fill="#ffffff" stroke="#c79100" stroke-width="2" rx="5"/>
-    <text x="520" y="255" font-family="Arial" font-size="12">PostgreSQL StatefulSet</text>
+    <text x="520" y="245" font-family="Arial" font-size="12">PostgreSQL Service</text>
+    <text x="530" y="265" font-family="Arial" font-size="11">(ClusterIP: 5432)</text>
+    
+    <!-- PostgreSQL StatefulSet -->
+    <rect x="470" y="300" width="260" height="60" fill="#ffffff" stroke="#c79100" stroke-width="2" rx="5"/>
+    <text x="520" y="325" font-family="Arial" font-size="12">PostgreSQL StatefulSet</text>
+    <text x="530" y="345" font-family="Arial" font-size="11">(Primary + Replicas)</text>
     
     <!-- PostgreSQL Pod -->
-    <rect x="470" y="300" width="260" height="40" fill="#ffffff" stroke="#c79100" stroke-width="2" rx="5"/>
-    <text x="540" y="325" font-family="Arial" font-size="12">PostgreSQL Pod (HPA)</text>
+    <rect x="470" y="380" width="260" height="40" fill="#ffffff" stroke="#c79100" stroke-width="2" rx="5"/>
+    <text x="540" y="405" font-family="Arial" font-size="12">PostgreSQL Pod (HPA)</text>
     
     <!-- Storage -->
     <rect x="450" y="450" width="300" height="100" fill="#ffd700" stroke="#c79100" stroke-width="2" rx="5" opacity="0.3"/>
@@ -49,11 +56,14 @@
     
     <!-- Network -->
     <rect x="50" y="450" width="300" height="100" fill="#ff5733" stroke="#c41e3a" stroke-width="2" rx="5" opacity="0.3"/>
-    <text x="60" y="470" font-family="Arial" font-size="12" font-weight="bold">Connected Network</text>
+    <text x="60" y="470" font-family="Arial" font-size="12" font-weight="bold">Network Policies</text>
+    <text x="60" y="490" font-family="Arial" font-size="11">Allow: Screenshot → PostgreSQL (5432)</text>
+    <text x="60" y="510" font-family="Arial" font-size="11">Allow: Ingress → Screenshot (443→80)</text>
     
     <!-- Connections -->
-    <!-- Ingress to Service -->
-    <path d="M 400 120 L 400 220" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+    <!-- Ingress to Screenshot Service -->
+    <path d="M 400 120 L 200 220" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+    <text x="290" y="160" font-family="Arial" font-size="11">443 → 80</text>
     
     <!-- Service to Deployment -->
     <path d="M 200 280 L 200 300" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
@@ -61,21 +71,22 @@
     <!-- Deployment to Pod -->
     <path d="M 200 360 L 200 380" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
     
-    <!-- StatefulSet to Pod -->
+    <!-- PostgreSQL Service to StatefulSet -->
     <path d="M 600 280 L 600 300" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
     
+    <!-- StatefulSet to Pod -->
+    <path d="M 600 360 L 600 380" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+    
     <!-- Pod to Storage -->
-    <path d="M 600 340 L 600 480" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+    <path d="M 600 420 L 600 480" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
     
     <!-- PVC to PV -->
     <path d="M 590 500 L 610 500" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
     
-    <!-- Pod Communication -->
-    <path d="M 330 400 L 470 320" stroke="#ff5733" stroke-width="3" stroke-dasharray="5,5" fill="none" marker-end="url(#arrowhead)"/>
-    <path d="M 470 400 L 330 320" stroke="#ff5733" stroke-width="3" stroke-dasharray="5,5" fill="none" marker-end="url(#arrowhead)"/>
-    
-    <!-- Communication Label -->
-    <text x="350" y="370" font-family="Arial" font-size="12" fill="#ff5733" font-weight="bold">Pod Communication</text>
+    <!-- Screenshot to PostgreSQL Connection -->
+    <path d="M 330 400 L 470 250" stroke="#4a90e2" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+    <text x="350" y="300" font-family="Arial" font-size="12" fill="#4a90e2" font-weight="bold">DB Connection</text>
+    <text x="350" y="320" font-family="Arial" font-size="11" fill="#4a90e2">(Persistent TCP)</text>
     
     <!-- Arrow definition -->
     <defs>

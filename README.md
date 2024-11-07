@@ -132,7 +132,7 @@ By the end of this step, we will have a fully functional application that works 
 # Took Successful Url screenshot
 ![App3](Images/Application-Success-Message.PNG)
 
-# Updated the DB
+# DB Updated the 
 ![Postgres](Images/Postgres-Data-Updated-Succesfuly.PNG)
 
 

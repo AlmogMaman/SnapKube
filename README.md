@@ -26,8 +26,7 @@ run the 'scripts/cluster-setup.bash'
 # Step 1: Set up Rancher (in scripts folder)
 Set up on-prem k8s cluster. Using Rancher.
 
-# Update the host file in you os
-![Host](Images/Host-Adding-Screenshot-Local-Host.PNG)
+
 
 # Set Up Rancher via the script in /screpts folder
 ![Rancher1](Images/Rancher-Setup.PNG)
@@ -70,6 +69,8 @@ Set up on-prem k8s cluster. Using Rancher.
 - For Windows, edit the C:\Windows\System32\drivers\etc\hosts file:
   Notepad should be run as Administrator to save changes.
 
+# Update the host file in you os
+![Host](Images/Host-Adding-Screenshot-Local-Host.PNG)
 
 # Step 2: Application Development and Deployment
 In this step, we will focus on building the web application, containerizing it, and deploying it to our Kubernetes cluster. The application will be designed to provide users with the ability to capture screenshots of websites. 

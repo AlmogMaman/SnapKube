@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: screenshot-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: screenshot-app
+  template:
+    metadata:
+      labels:
+        app: screenshot-app
+    spec:
+      containers:
+      - name: screenshot-app
+        image: almogmaman762/screenshot-app:6
+        # image: almogmaman762/screenshot-app
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_NAME
+          value: screenshots
+        - name: DB_USER
+          value: postgres
+        - name: DB_HOST
+          value: postgres
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "1"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5

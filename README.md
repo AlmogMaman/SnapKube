@@ -1,4 +1,4 @@
-###Description: Web Screenshot Application on Kubernetes - On-premise Using Rancher.
+### Description: Web Screenshot Application on Kubernetes - On-premise Using Rancher.
 
 ### Prerequisites:
  - Docker up and running
@@ -11,15 +11,15 @@
 ![Architecture](Images/kubernetes-arch-svg.svg)
 
 ### How to run:
-Deployment instructions:
-'''bash
-    run the 'sudo scripts/rancher-setup.bash' (pay attention to Step 1 below)
-    run the 'scripts/cluster-setup.bash'
-'''
+# Deployment instructions:
+
+```bash
+run the 'sudo scripts/rancher-setup.bash' (pay attention to Step 1 below)
+run the 'scripts/cluster-setup.bash'
 
 ### Explain about the process:
 
-### Steps:
+# Steps:
 
 # Step 1: Set up Rancher (in scripts folder)
 Set up on-prem k8s cluster. Using Rancher.
@@ -88,11 +88,6 @@ Adjust the application working properly with the postgressSQL db.
 
 
 
-UPCOMMING:
- - CI/CD
- - Monitoring
- - Logging   
-
 
 
 
@@ -104,3 +99,9 @@ run 'sudo scripts/rancher-cleanup.bash'
 ![Cleanup1](Images/Cluster-Cleanup.PNG)
 
 ![Cleanup2](Images/Rancher-Cleanup.PNG)
+
+
+# UPCOMMING:
+ - CI/CD
+ - Monitoring
+ - Logging   

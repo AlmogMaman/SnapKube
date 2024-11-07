@@ -65,7 +65,15 @@ With these features:
     - Store screenshot metadata and file references in a database.
 
 # Step 3:
-Set the ingress controller and cert manager.
+Set the ingress controller with TLS self signed Certificate.
+
+#Set this in the host file in you os.
+# To update the OS host file, add the following line:
+## 127.0.0.1 screenshot-app.local
+# For Linux or macOS, edit the /etc/hosts file:
+# sudo nano /etc/hosts
+# For Windows, edit the C:\Windows\System32\drivers\etc\hosts file:
+# Notepad should be run as Administrator to save changes.
 
 #Step 4:
 Install build and run postges for storing the data.

@@ -14,7 +14,7 @@ spec:
   tls:
   - hosts:
     - screenshot-app.local
-    secretName: ca-key-pair #screenshot-tls
+    secretName: screenshot-tls
   rules:
   - host: screenshot-app.local
     http:

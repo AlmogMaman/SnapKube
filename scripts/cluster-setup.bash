@@ -67,7 +67,12 @@ kubectl create secret tls screenshot-tls --cert=tls.crt --key=tls.key
 # kubectl create secret tls screenshot-tls --cert=screenshot-cert.pem --key=screenshot-key.pem
 
 #Set this in the host file in you os.
-#127.0.0.1 screenshot-app.local
+# To update the OS host file, add the following line:
+## 127.0.0.1 screenshot-app.local
+# For Linux or macOS, edit the /etc/hosts file:
+# sudo nano /etc/hosts
+# For Windows, edit the C:\Windows\System32\drivers\etc\hosts file:
+# Notepad should be run as Administrator to save changes.
 
 kubectl get ingress screenshot-app
 

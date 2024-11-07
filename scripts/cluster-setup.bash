@@ -1,3 +1,6 @@
+#!/bin/bash
+
+
 #Set a namespace for the project
 kubectl create ns nginx
 kubectl create namespace screenshots-project
@@ -9,7 +12,6 @@ kubectl config view --minify | grep namespace:
 
 kubectl apply -f ../k8s/secrets/
 kubectl apply -f ../k8s/storage/
-kubectl exec -it postgres-0 -- psql -U postgres -d screenshots -f /docker-entrypoint-initdb.d/init.sql
 kubectl apply -f ../k8s/application/
 kubectl apply -f ../k8s/postgres/
 
@@ -78,9 +80,25 @@ kubectl get ingress screenshot-app
 
 kubectl get svc
 
-# kubectl port-forward -n nginx svc/my-nginx-ingress-nginx-controller  4430:443
-kubectl port-forward -n nginx svc/my-nginx-ingress-nginx-controller 0.0.0.0:4430:443
 
+kubectl exec -it postgres-0 -- psql -U postgres -d screenshots -f /docker-entrypoint-initdb.d/init.sql
+
+# kubectl port-forward -n nginx svc/my-nginx-ingress-nginx-controller  4430:443
+# kubectl port-forward -n nginx svc/my-nginx-ingress-nginx-controller 0.0.0.0:4430:443
+
+
+
+# Get the name of the Ingress service dynamically
+INGRESS_SERVICE_NAME=$(kubectl get svc -n nginx -l app.kubernetes.io/name=ingress-nginx -o jsonpath='{.items[0].metadata.name}')
+
+# Check if the service name was found
+if [ -z "$INGRESS_SERVICE_NAME" ]; then
+    echo "No Ingress service found in the 'nginx' namespace."
+    exit 1
+fi
+
+# Port forward to the Ingress service
+kubectl port-forward -n nginx svc/$INGRESS_SERVICE_NAME 4430:443
 
 
 

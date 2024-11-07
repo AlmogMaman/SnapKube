@@ -17,8 +17,8 @@ Documentation covering:
 
 ### How to run:
 Deployment instructions:
-run the 'scripts/rancher-setup.bash' (pay attention to Step 1 below)
-run the 'scripts/cluster-setup.bash'
+run the 'sudo scripts/rancher-setup.bash' (pay attention to Step 1 below)
+run the 'sudo scripts/cluster-setup.bash'
 
 ### Explain about the process:
 
@@ -114,9 +114,12 @@ Logging
 
 
 ### Cleanup:
-run 'scripts/cluster-cleanup.bash'
-run 'scripts/rancher-cleanup.bash'
+run 'sudo scripts/cluster-cleanup.bash'
+run 'sudo scripts/rancher-cleanup.bash'
 
+
+
+r2XOZXq4XsWXJp2B
 
 
 

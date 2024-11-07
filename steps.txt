@@ -4,11 +4,11 @@ Documentation covering:
 - Cleanup - V
 - User guide.
 - Steps - V
-- Images
+- Images - V
 
 
 
-###Description: Web Screenshot Application on Kubernetes - On-premise.
+###Description: Web Screenshot Application on Kubernetes - On-premise Using Rancher.
 
 ### Prerequisites:
  - Docker up and running
@@ -18,6 +18,7 @@ Documentation covering:
 
 ### Architecture in Local Kubernetes Cluster (Rancher):
 
+![Architecture](Images/)
 # Adding here the architecture file.
 
 ### How to run:

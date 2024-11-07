@@ -29,13 +29,13 @@ Set up on-prem k8s cluster. Using Rancher.
 # Update the host file in you os
 ![Host](Images/Host-Adding-Screenshot-Local-Host.PNG)
 
-# Set Up rancher via the script in /screpts folder
+# Set Up Rancher via the script in /screpts folder
 ![Rancher1](Images/Rancher-Setup.PNG)
 
 # Rancher is accesable
 ![Rancher2](Images/Rancher-Welcome.PNG)
 
-# Find the boostrap password and enter to rancher welcome page
+# Find the boostrap password and enter to Rancher welcome page
 ![Rancher3](Images/Rancher-Boostrap.PNG)
 
 ![Rancher4](Images/Rancher-Boostrap1.PNG)
@@ -86,9 +86,8 @@ To achieve this, we will follow these key tasks:
 The application will have the following features:
 - Accept user input for a target website URL.
 - Capture a screenshot of the specified website using a headless browser (e.g., Selenium or Playwright).
-- Store screenshot metadata (such as URL, timestamp, and user information) and file references in a PostgreSQL database for future retrieval and analysis.
 
-By the end of this step, we will have a fully functional web application deployed in our Kubernetes cluster, ready to accept user requests and capture screenshots efficiently.
+By the end of this step, we will have a functional web application deployed in our Kubernetes cluster, ready to accept user requests and capture screenshots efficiently.
 
 # Step 3:
 Set the ingress controller with a TLS self-signed certificate to ensure secure communication between users and the application. This step is crucial for protecting sensitive data transmitted over the network. 
@@ -101,10 +100,13 @@ Once the ingress controller is set up and the TLS certificate is configured, we 
 
 Now we have the application running in the cluster, accessible via the ingress controller (NGINX), providing a seamless and secure user experience.
 
+# Access the application (via nginx ingress controller)
+![App1](Images/Application-Accesing.PNG)
+
 # Step 4:
 To set up PostgreSQL as my database in the cluster, we will use a StatefulSet resource. This approach ensures that each PostgreSQL instance has a stable network identity and persistent storage, which is crucial for database applications. 
 
-First, we will create a PersistentVolumeClaim (PVC) to request storage resources from the cluster. Then, we will define the StatefulSet, specifying the PostgreSQL image, environment variables for database configuration, and the volume mounts to link the PVC to the PostgreSQL pods. 
+First, we will create a PersistentVolume (PV) and PersistentVolumeClaim (PVC) to request storage resources from the cluster. Then, we will define the StatefulSet, specifying the PostgreSQL image, environment variables for database configuration, and the volume mounts to link the PVC to the PostgreSQL pods.
 
 Make sure to configure the necessary service to allow communication between the application and the PostgreSQL database. This setup will provide a reliable and scalable database solution for our application.
 
@@ -122,8 +124,7 @@ Finally, we will conduct thorough testing to ensure that the application interac
 
 By the end of this step, we will have a fully functional application that works seamlessly with the PostgreSQL database, enabling efficient data storage and retrieval for our web screenshot service.
 
-# Access the application (via nginx ingress controller)
-![App1](Images/Application-Accesing.PNG)
+
 
 # Checking validation of input
 ![App2](Images/Application-Checking-Input.PNG)
@@ -136,10 +137,6 @@ By the end of this step, we will have a fully functional application that works 
 
 
 
-
-
-
-
 ### Cleanup:
 ```bash
 run 'scripts/cluster-cleanup.bash'
@@ -149,9 +146,3 @@ run 'sudo scripts/rancher-cleanup.bash'
 ![Cleanup1](Images/Cluster-Cleanup.PNG)
 
 ![Cleanup2](Images/Rancher-Cleanup.PNG)
-
-
-# Upcomming:
- - CI/CD
- - Monitoring
- - Logging   

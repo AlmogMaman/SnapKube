@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: snapkube-app
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: screenshot-app=almogmaman762/screenshot-app
+    argocd-image-updater.argoproj.io/screenshot-app.update-strategy: digest
+    argocd-image-updater.argoproj.io/screenshot-app.pull-secret: pullsecret:argocd/dockerhub-secret
+    argocd-image-updater.argoproj.io/write-back-method: git
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/YOUR_USERNAME/SnapKube.git'  # Replace with your repo URL
+    targetRevision: HEAD
+    path: k8s
+    plugin:
+      name: argocd-image-updater
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: screenshot-app
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: screenshot-app=almogmaman762/screenshot-app
+    argocd-image-updater.argoproj.io/screenshot-app.force-update: "true"
 spec:
   replicas: 1
   selector:
@@ -14,8 +17,7 @@ spec:
     spec:
       containers:
       - name: screenshot-app
-        image: almogmaman762/screenshot-app:6
-        # image: almogmaman762/screenshot-app
+        image: almogmaman762/screenshot-app
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

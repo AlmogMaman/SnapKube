@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: screenshot-app
-        image: almogmaman762/screenshot-app
+        image: almogmaman762/screenshot-app@sha256:b3ffd19df97f244e9f28aaad8d93d985635384bcbe3dda7127c96db8141d942e    # Will be updated by image-updater
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

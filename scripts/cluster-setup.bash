@@ -16,12 +16,26 @@ helm install my-nginx ingress-nginx/ingress-nginx --namespace nginx
 # Apply base infrastructure
 kubectl apply -f ../k8s/secrets/
 kubectl apply -f ../k8s/storage/
-kubectl apply -f ../k8s/application/
 kubectl apply -f ../k8s/postgres/
 
 # Wait for PostgreSQL to be ready
 echo "Waiting for PostgreSQL to be ready..."
 kubectl wait --for=condition=ready pod -l app=postgres --timeout=300s
+
+# Get latest image digest
+echo "Fetching latest image digest..."
+LATEST_DIGEST=$(curl -s -H "Authorization: Bearer $DOCKER_TOKEN" "https://hub.docker.com/v2/repositories/almogmaman762/screenshot-app/tags" | grep -o '"digest":"[^"]*' | head -1 | cut -d'"' -f4)
+
+if [ -n "$LATEST_DIGEST" ]; then
+    echo "Found latest digest: $LATEST_DIGEST"
+    # Update deployment.yaml with latest digest
+    sed -i "s|@sha256:latest-digest|@$LATEST_DIGEST|" ../k8s/application/deployment.yaml
+    # Apply the deployment with latest image
+    kubectl apply -f ../k8s/application/
+else
+    echo "Failed to fetch latest digest. Please check your Docker Hub credentials."
+    exit 1
+fi
 
 # Execute init.sql
 kubectl exec -it postgres-0 -- psql -U postgres -d screenshots -f /docker-entrypoint-initdb.d/init.sql
@@ -59,26 +73,40 @@ echo "Waiting for Argo CD to be ready..."
 kubectl wait --for=condition=available deployment -l "app.kubernetes.io/name=argocd-server" -n argocd --timeout=300s
 
 # Create Docker Hub secret for image updater
-if [ -z "$DOCKER_USERNAME" ] || [ -z "$DOCKER_PASSWORD" ]; then
-    echo "Please set DOCKER_USERNAME and DOCKER_PASSWORD environment variables"
+if [ -z "$DOCKER_USERNAME" ] || [ -z "$DOCKER_TOKEN" ]; then
+    echo "Please set DOCKER_USERNAME and DOCKER_TOKEN environment variables"
     exit 1
 fi
 
 kubectl create secret generic dockerhub-secret \
     --namespace argocd \
     --from-literal=username=$DOCKER_USERNAME \
-    --from-literal=password=$DOCKER_PASSWORD
+    --from-literal=password=$DOCKER_TOKEN
 
 # Apply Argo CD application configuration
 kubectl apply -f ../k8s/argocd/
 
-# Apply the application deployment last
-kubectl apply -f ../k8s/application/
+# Copy TLS secret to argocd namespace
+kubectl get secret screenshot-tls -o yaml | sed 's/namespace: .*/namespace: argocd/' | kubectl apply -f -
 
-# Get Argo CD initial admin password
-echo "Argo CD initial admin password:"
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-echo "\n"
+echo "Setting up ArgoCD ingress..."
+kubectl apply -f ../k8s/argocd/ingress.yaml
+
+# Get the name of the Ingress service dynamically
+INGRESS_SERVICE_NAME=$(kubectl get svc -n nginx -l app.kubernetes.io/name=ingress-nginx -o jsonpath='{.items[0].metadata.name}')
+if [ -n "$INGRESS_SERVICE_NAME" ]; then
+    echo "Setting up port forwarding for ingress on port 4430..."
+    kubectl port-forward -n nginx svc/$INGRESS_SERVICE_NAME 4430:443 &
+    
+    echo "Services are accessible at:"
+    echo "- Screenshot app: https://screenshot-app.local:4430/app"
+    echo "- ArgoCD: https://screenshot-app.local:4430/argocd"
+    echo "ArgoCD initial admin password:"
+    kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+    echo
+else
+    echo "Warning: Ingress service not found"
+fi
 
 # Display final status
 echo "Checking deployment status..."
@@ -86,16 +114,4 @@ kubectl get pods -n argocd
 kubectl get ingress screenshot-app
 kubectl get svc
 
-
 kubectl exec -it postgres-0 -- psql -U postgres -d screenshots -f /docker-entrypoint-initdb.d/init.sql
-
-
-
-# Get the name of the Ingress service dynamically
-INGRESS_SERVICE_NAME=$(kubectl get svc -n nginx -l app.kubernetes.io/name=ingress-nginx -o jsonpath='{.items[0].metadata.name}')
-if [ -n "$INGRESS_SERVICE_NAME" ]; then
-    echo "Setting up port forwarding for ingress..."
-    kubectl port-forward -n nginx svc/$INGRESS_SERVICE_NAME 4430:443
-else
-    echo "Warning: Ingress service not found"
-fi

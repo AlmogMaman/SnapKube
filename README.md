@@ -10,6 +10,22 @@
 
 ![Architecture](Images/kubernetes-arch-svg.svg)
 
+### Environment Setup:
+Before running the cluster setup script, ensure the following environment variables are set:
+
+```bash
+# Docker Hub credentials
+export DOCKER_USERNAME=your_dockerhub_username
+export DOCKER_TOKEN=your_dockerhub_api_token    # Use API token instead of password
+```
+
+### Security Note:
+For Docker Hub authentication, it's recommended to use an API token instead of your password:
+1. Go to Docker Hub > Account Settings > Security
+2. Click "New Access Token"
+3. Give it a description and select appropriate permissions
+4. Copy the token and use it as DOCKER_TOKEN
+
 ### How to run:
 # Deployment instructions:
 

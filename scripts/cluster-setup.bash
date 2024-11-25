@@ -65,7 +65,7 @@ echo "Setting up Argo CD..."
 kubectl create namespace argocd
 
 # Apply the bootstrap ArgoCD installation
-kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml -n argocd
 
 # Wait for Argo CD to be ready
 echo "Waiting for Argo CD to be ready..."
@@ -83,7 +83,8 @@ kubectl create secret generic dockerhub-secret \
     --from-literal=password=$DOCKER_TOKEN
 
 # Apply ArgoCD Applications (this will manage both ArgoCD and image updater)
-kubectl apply -f ../k8s/argocd/
+# And Ingress.
+kubectl apply -f ../k8s/argocd/ -n argocd
 
 # Copy TLS secret to argocd namespace
 kubectl get secret screenshot-tls -o yaml | sed 's/namespace: .*/namespace: argocd/' | kubectl apply -f -
@@ -112,5 +113,3 @@ echo "Checking deployment status..."
 kubectl get pods -n argocd
 kubectl get ingress screenshot-app
 kubectl get svc
-
-kubectl exec -it postgres-0 -- psql -U postgres -d screenshots -f /docker-entrypoint-initdb.d/init.sql

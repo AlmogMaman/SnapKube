@@ -63,10 +63,9 @@ kubectl create secret tls screenshot-tls --cert=tls.crt --key=tls.key
 # Now set up Argo CD
 echo "Setting up Argo CD..."
 kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-# Install Argo CD Image Updater
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
+# Apply the bootstrap ArgoCD installation
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 # Wait for Argo CD to be ready
 echo "Waiting for Argo CD to be ready..."
@@ -83,7 +82,7 @@ kubectl create secret generic dockerhub-secret \
     --from-literal=username=$DOCKER_USERNAME \
     --from-literal=password=$DOCKER_TOKEN
 
-# Apply Argo CD application configuration
+# Apply ArgoCD Applications (this will manage both ArgoCD and image updater)
 kubectl apply -f ../k8s/argocd/
 
 # Copy TLS secret to argocd namespace

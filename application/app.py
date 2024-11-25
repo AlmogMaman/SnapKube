@@ -59,79 +59,81 @@ def index():
 @app.route('/screenshot', methods=['POST'])
 @screenshot_duration.time()
 def take_screenshot():
-    screenshot_requests.inc()
-    url = request.json.get('url')
-    
-    # Validate URL format using regex
-    if not url or not re.match(r'^(http|https)://', url):
-        app.logger.error('Invalid URL format')
-        return jsonify({'error': 'Invalid URL format. Please provide a valid URL starting with http:// or https://'}), 400
+    screenshot_requests.inc()  # Increment the counter
+    start_time = datetime.now()
 
     try:
-        # Setup Chrome in headless mode
+        data = request.get_json()
+        url = data.get('url')
+
+        if not url:
+            return jsonify({'error': 'URL is required'}), 400
+
+        # Validate URL format
+        if not re.match(r'^https?://.+', url):
+            return jsonify({'error': 'Invalid URL format. URL must start with http:// or https://'}), 400
+
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--window-size=1920,1080')
 
         driver = webdriver.Chrome(options=chrome_options)
-        driver.get(url)
+        driver.set_page_load_timeout(30)  # 30 seconds timeout
 
-        # Generate filename
-        filename = f"screenshot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-        file_path = f"/screenshots/{filename}"
-
-        # Take screenshot
-        driver.save_screenshot(file_path)
-
-        # Read the screenshot file and encode it to base64
-        with open(file_path, "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-
-        
-        info = {
-            'screenshot_id' : abs(hash(file_path)) % (10**10),  # unique number based on the file path bigin
-            'timestamp': datetime.now().isoformat(),
-            'page_url': url,
-            'width': 0,
-            'height': 0,
-            'file_format': '',
-            'file_size': 0, #bigin
-            'creation_time':  datetime.now().isoformat(),
-            'modification_time':  datetime.now().isoformat(),
-
-            'username': getpass.getuser(),
-            'user_id': os.getuid(),
-        }
-        info['width'], info['height'], info['file_format'], info['file_size'], info['creation_time'], info['modification_time'] = extract_metadata(file_path)
-        # connect to the db
-        connection = get_db_connection()
-        cursor = connection.cursor()
-
-
-        cursor.execute(
-        sql.SQL("INSERT INTO user_screenshots (page_url, user_id, screenshot_id, timestamp, width, height, file_format, file_size, creation_time, modification_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"),
-        (info['page_url'], info['user_id'], info['screenshot_id'], info['timestamp'], info['width'], info['height'], info['file_format'], info['file_size'], info['creation_time'], info['modification_time'])
-        )
+        try:
+            driver.get(url)
+            # Wait for page to load
+            driver.implicitly_wait(5)
             
-        connection.commit()
+            # Take screenshot
+            screenshot = driver.get_screenshot_as_png()
+            
+            # Convert to base64 for preview
+            screenshot_base64 = base64.b64encode(screenshot).decode('utf-8')
+            
+            # Get metadata
+            metadata = extract_metadata(screenshot)
+            
+            # Save to database
+            with get_db_connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        INSERT INTO screenshots (url, image, metadata, created_by)
+                        VALUES (%s, %s, %s, %s)
+                        RETURNING id
+                        """,
+                        (url, screenshot, metadata, getpass.getuser())
+                    )
+                    screenshot_id = cur.fetchone()[0]
+                conn.commit()
 
-        msg = jsonify({
-            'status': 'success',
-            'file_path': file_path,
-            'image_data': encoded_string
-        })
+            app.logger.info(f'Screenshot taken successfully for URL: {url}')
+            
+            # Return both success message and base64 image for preview
+            return jsonify({
+                'status': 'success',
+                'message': 'Screenshot taken successfully',
+                'id': screenshot_id,
+                'image': screenshot_base64
+            })
+
+        except Exception as e:
+            app.logger.error(f'Error taking screenshot: {str(e)}')
+            return jsonify({'error': f'Failed to take screenshot: {str(e)}'}), 500
+        finally:
+            driver.quit()
 
     except Exception as e:
-        app.logger.error(f'Error taking screenshot/updating the db: {str(e)}')
+        app.logger.error(f'Error processing request: {str(e)}')
         return jsonify({'error': str(e)}), 500
     finally:
-        driver.quit()
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
-    return msg
+        duration = (datetime.now() - start_time).total_seconds()
+        screenshot_duration.observe(duration)
+
 @app.route('/health')
 def health_check():
     return jsonify({'status': 'healthy'}), 200
